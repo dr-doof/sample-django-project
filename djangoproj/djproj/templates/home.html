@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% include 'head_css.html' %}
+
+
+{% block head_title %}Welcome|{% endblock %}
+<style>
+{% block style %}
+.text-align-center {
+  text-align: center;
+
+}
+.navbar-static-top {
+	margin-bottom: 0px;
+  background-color: #054805;
+}
+.jumbotron{
+	background-color: #054805;
+	color: white;
+}
+{% endblock %}
+</style>
+
+
+{% block jumbotron %}
+
+{% if not request.user.is_authenticated %}
+<div class="jumbotron">
+<div class="container">
+        <div class="row">
+<!-- Main component for a primary marketing message or call to action -->
+      <div class="col-sm-6">
+        <h1>Try Django 1.8</h1>
+        <p>This is MVP Landing page</p>
+        <p>
+          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">Join Us &raquo;</a>
+        </p>
+        </div>
+        <div class="col-sm-6">
+        	<iframe width="560" height="315" src="https://www.youtube.com/embed/mWRsgZuwf_8?list=RDmWRsgZuwf_8" frameborder="0" allowfullscreen></iframe>
+        </div>
+        </div>
+        </div>
+        </div>
+{% endif %}
+{% endblock %}
+	
+{% block content %}
+{% if request.user.is_authenticated %}
+	<h1>You are logged in</h1>
+	{% if queryset %}
+	<h2>Welcome Staff</h2>
+	<table class="table">
+	{% for instance in queryset %}
+		<tr><td>{{ instance }}</td><td>{{ instance.full_name }}</td><td>{{ instance.timestamp|timesince }}</td></tr><br>
+	{% endfor%}
+	</table>
+	{% endif %}
+{% else %}
+<div class="row">
+  <div class="col-sm-3 pull-right">
+<p class="lead">{{title}}</p>
+
+<form method='POST' action=''>{% csrf_token %}
+{{ form|crispy }}
+<input class='btn btn-primary' type='submit' value='Sign Up' />
+</form>
+</div>
+<div class="col-sm-3"><p class="lead text-align-center">Built with Django &amp; Bootstrap<br><span class="fa-stack fa-lg fa-5x">
+<i class="fa fa-square-o fa-stack-2x"></i>
+  <i class="fa fa-magic fa-stack-1x"></i>
+</span></p>
+</div>
+<div class="col-sm-3"><p class="lead text-align-center">Created for starters of all kind<br><span class='fa-stack fa-lg fa-5x'>
+<i class='fa fa-comment-o fa-stack-2x'></i>
+<i style='color:yellow;' class="fa fa-bolt fa-stack-1x"></i>
+
+</span></p></div>
+
+
+<div class="col-sm-3"><p class="lead text-align-center">Always open source<br><br><span class="fa-stack fa-lg fa-5x">
+<i class="fa fa-circle-o-notch fa-stack-2x"></i>
+  <i class="fa fa-github fa-stack-1x"></i>
+</span>
+</p></div>
+</div>
+{% endif %}
+{% endblock %}
